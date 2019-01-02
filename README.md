@@ -8,7 +8,9 @@ Most simple (opinionated) way to use Redux in your application.
 - **Better Readability** : Instead of Switch case, Redux-wow use functions and object.
 - **Better Syntax** : Use immutable state without using `...state` kind of syntax. redux-wow use immer internally.
 
-# TODOS Reducere [ Using Redux (the normal way)]
+# TODOS Reducere
+
+## Using Redux
 
 ```js
 import {
@@ -68,7 +70,7 @@ export default function todos(state = initialState, action) {
 }
 ```
 
-# TODOS Reducer [ Using Redux with Redux WOW]
+## Using Redux with Redux WOW
 
 ```js
 import { createReducer } from "redux-wow";
@@ -129,7 +131,9 @@ export default createReducer({
 });
 ```
 
-# VISIBILITY_FILTER Reducer [ Using Redux (the normal way)]
+# VISIBILITY_FILTER Reducer
+
+## Using Redux
 
 ```js
 import { SET_VISIBILITY_FILTER } from "../constants/ActionTypes";
@@ -147,7 +151,7 @@ const visibilityFilter = (state = SHOW_ALL, action) => {
 export default visibilityFilter;
 ```
 
-# VISIBILITY_FILTER Reducer [ Using Redux with Redux WOW]
+## Using Redux with Redux WOW
 
 ```js
 import { SHOW_ALL } from "../constants/TodoFilters";
@@ -164,7 +168,9 @@ export default createReducer({
 });
 ```
 
-# Actions [ Using Redux (the normal way)]
+# Actions
+
+## Using Redux (the normal way)
 
 ```js
 export const ADD_TODO = "ADD_TODO";
@@ -187,7 +193,7 @@ export const setVisibilityFilter = filter => ({
 });
 ```
 
-# Actions [ Using Redux with Redux Wow]
+## Using Redux with Redux Wow
 
 ```js
 //Redux WOW automatically generate actions-dispatchers automatically.
