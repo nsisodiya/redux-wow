@@ -2,7 +2,13 @@
 
 Most simple (opinionated) way to use Redux in your application.
 
-# Using Redux (the normal way)
+# Motivation
+
+- **Less Boilerplate** : Automatically Generate actions from Reducer definitions.
+- **Better Readability** : Instead of Switch case, Redux-wow use functions and object.
+- **Better Syntax** : Use immutable state without using `...state` kind of syntax. redux-wow use immer internally.
+
+# TODOS Reducere [ Using Redux (the normal way)]
 
 ```js
 import {
@@ -13,7 +19,6 @@ import {
   COMPLETE_ALL_TODOS,
   CLEAR_COMPLETED
 } from "../constants/ActionTypes";
-//import { createReducer } from "../redux-wow";
 const initialState = [
   {
     text: "Use Redux",
@@ -63,13 +68,13 @@ export default function todos(state = initialState, action) {
 }
 ```
 
-# Using Redux with Redux-wow
+# TODOS Reducer [ Using Redux with Redux WOW]
 
 ```js
 import { createReducer } from "redux-wow";
 
 export default createReducer({
-  namespace: "TODO",
+  namespace: "Todos",
   initialState: [
     {
       text: "Use Redux",
@@ -85,7 +90,13 @@ export default createReducer({
     });
   },
   deleteTodo(state, id) {
-    state = state.filter(todo => todo.id !== id);
+    var dIndex = -1;
+    state.forEach((todo, index) => {
+      if (todo.id === id) {
+        dIndex = index;
+      }
+    });
+    state.splice(dIndex, 1);
   },
   editTodo(state, id, text) {
     state.forEach(todo => {
@@ -107,7 +118,89 @@ export default createReducer({
     });
   },
   clearCompleted(state) {
-    state = state.filter(todo => todo.completed === false);
+    for (let index = 0; index < state.length; index++) {
+      const todo = state[index];
+      if (todo.completed === true) {
+        state.splice(index, 1);
+        index--;
+      }
+    }
   }
 });
+```
+
+# VISIBILITY_FILTER Reducer [ Using Redux (the normal way)]
+
+```js
+import { SET_VISIBILITY_FILTER } from "../constants/ActionTypes";
+import { SHOW_ALL } from "../constants/TodoFilters";
+
+const visibilityFilter = (state = SHOW_ALL, action) => {
+  switch (action.type) {
+    case SET_VISIBILITY_FILTER:
+      return action.filter;
+    default:
+      return state;
+  }
+};
+
+export default visibilityFilter;
+```
+
+# VISIBILITY_FILTER Reducer [ Using Redux with Redux WOW]
+
+```js
+import { SHOW_ALL } from "../constants/TodoFilters";
+import { createReducer } from "redux-wow";
+
+export default createReducer({
+  namespace: "VisibilityFilter",
+  initialState: {
+    filter: SHOW_ALL
+  },
+  setFilter(state, filter) {
+    state.filter = filter;
+  }
+});
+```
+
+# Actions [ Using Redux (the normal way)]
+
+```js
+export const ADD_TODO = "ADD_TODO";
+export const DELETE_TODO = "DELETE_TODO";
+export const EDIT_TODO = "EDIT_TODO";
+export const COMPLETE_TODO = "COMPLETE_TODO";
+export const COMPLETE_ALL_TODOS = "COMPLETE_ALL_TODOS";
+export const CLEAR_COMPLETED = "CLEAR_COMPLETED";
+export const SET_VISIBILITY_FILTER = "SET_VISIBILITY_FILTER";
+
+export const addTodo = text => ({ type: types.ADD_TODO, text });
+export const deleteTodo = id => ({ type: types.DELETE_TODO, id });
+export const editTodo = (id, text) => ({ type: types.EDIT_TODO, id, text });
+export const completeTodo = id => ({ type: types.COMPLETE_TODO, id });
+export const completeAllTodos = () => ({ type: types.COMPLETE_ALL_TODOS });
+export const clearCompleted = () => ({ type: types.CLEAR_COMPLETED });
+export const setVisibilityFilter = filter => ({
+  type: types.SET_VISIBILITY_FILTER,
+  filter
+});
+```
+
+# Actions [ Using Redux with Redux Wow]
+
+```js
+//Redux WOW automatically generate actions-dispatchers automatically.
+import { createActionsFromReducer } from "redux-wow";
+import todos from "../reducers/todos";
+import visibilityFilter from "../reducers/visibilityFilter";
+import { dispatch } from "../reducers/store";
+
+export default {
+  [todos.namespace]: createActionsFromReducer(todos, dispatch),
+  [visibilityFilter.namespace]: createActionsFromReducer(
+    visibilityFilter,
+    dispatch
+  )
+};
 ```
