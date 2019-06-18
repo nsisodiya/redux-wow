@@ -1,4 +1,5 @@
 import produce from "immer";
+
 export function createActionsFromReducer(
   { namespace, actionMethods },
   dispatch
@@ -6,7 +7,6 @@ export function createActionsFromReducer(
   var temp = {};
   actionMethods.forEach(fname => {
     temp[fname] = (...args) => {
-      console.log(args, ...args);
       dispatch({
         type: `[${namespace}] ${fname}`,
         payload: args
@@ -23,13 +23,16 @@ export function createReducer(m) {
       if (namespace === `[${m.namespace}]`) {
         var mName = action.type.split(" ")[1];
         if (typeof m[mName] === "function") {
-          console.log("PayLoad", action.payload);
           return m[mName](draftState, ...action.payload);
         } else {
           return prevState;
         }
       } else {
-        return prevState;
+        if (typeof m[action.type] === "function") {
+          return m[action.type](draftState, ...action.payload);
+        } else {
+          return prevState;
+        }
       }
     });
   };
