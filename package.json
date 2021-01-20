@@ -5,7 +5,7 @@
   "main": "dist/redux-wow.cjs.js",
   "module": "dist/redux-wow.esm.js",
   "peerDependencies": {
-    "immer": "^6.0.3"
+    "immer": "^8.0.1"
   },
   "author": "Narendra Sisodiya - narendra.sisodiya.1983@gmail.com",
   "license": "MIT",
@@ -21,7 +21,7 @@
     "@babel/core": "^7.9.0",
     "@rollup/plugin-commonjs": "^11.0.1",
     "@rollup/plugin-node-resolve": "^7.0.0",
-    "immer": "^6.0.3",
+    "immer": "^8.0.1",
     "rollup": "^1.29.0",
     "rollup-plugin-babel": "^4.4.0"
   },
